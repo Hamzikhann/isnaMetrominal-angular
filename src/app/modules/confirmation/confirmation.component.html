@@ -1,0 +1,201 @@
+<div class="Confirmation">
+  <div class="container">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-8 offset-2">
+          <div class="print-button text-center" id="download-invoice">
+            <button class="button button-icon button-default my-3 button-print text-center" (click)="downloadPDF()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+              </svg>
+              <span class="px-3">Download Invoice </span>
+            </button>
+          </div>
+          <div class="invoice">
+            <div id="content">
+              <div class="header bg-transparent p-0">
+                <div class="container p-0">
+                  <div class="logo d-block">
+                    <p class="text-dark m-0">
+                      Assalamualaikum and Thank you for registering for the 2024 ISNA Matrimonials!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="payment-section px-0">
+                <div class="text-left">
+                  <p>
+                    We at ISNA hope to help you fulfill this important part of our deen.
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-light p-4">
+                <div class="contact-section">
+                  <div class="">
+                    <h4 class="card-title fs-5 mb-3">Your Details</h4>
+                    <div class="br-detail-box">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <ul class="list-info">
+                            <ng-container *ngIf="registrationDetail">
+                              <li>
+                                <span class="lbl">Attendee Name</span>
+                                <span class="value">{{
+                                  registrationDetail.firstName + " " + registrationDetail.lastName
+                                  }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Date of Birth</span>
+                                <span class="value">{{ registrationDetail.dateOfBirth | date }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Gender</span>
+                                <span class="value">{{ registrationDetail.gender }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Marital Status</span>
+                                <span class="value">{{ registrationDetail.martialStatus }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Education Level</span>
+                                <span class="value">
+                                  {{ registrationDetail.educationLevel.title == 'Other' ?
+                                  registrationDetail.educationLevelOther : registrationDetail.educationLevel.title }}
+                                </span>
+                              </li>
+                              <li>
+                                <span class="lbl">Residential Status</span>
+                                <span class="value">{{ registrationDetail.residentialStatus }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Profession</span>
+                                <span class="value">{{ registrationDetail.profession.title == 'Other' ?
+                                  registrationDetail.otherProfession : registrationDetail.profession.title }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Email</span>
+                                <span class="value">{{ registrationDetail.email }}</span>
+                              </li>
+                              <li>
+                                <span class="lbl">Address</span>
+                                <span class="value">
+                                  {{ registrationDetail.address }}<br>
+                                  {{ registrationDetail.city }}<br>
+                                  {{ registrationDetail.state }}<br>
+                                </span>
+                              </li>
+                              <li>
+                                <span class="lbl">Phone</span>
+                                <span class="value">
+                                  {{ registrationDetail.phone }}<br>
+                                  {{ registrationDetail.cellPhone }}
+                                </span>
+                              </li>
+                              <li>
+                                <span class="lbl">Ethnic Background</span>
+                                <span class="value">{{ registrationDetail.ethnicBackground }}</span>
+                              </li>
+                            </ng-container>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="Booth-Selection">
+                  <h4 class="card-title mt-4 pt-3 mb-3">Registration Details</h4>
+                  <div class="br-detail-box">
+                    <ul>
+                      <li>
+                        <span class="lbl">Seating Group [{{ registrationDetail?.seatingGroup.title }}]</span>
+                        <span class="value"></span>
+                      </li>
+                      <li>
+                        <span class="lbl">{{ registrationDetail?.category.title }}</span>
+                        <span class="value">${{ registrationDetail?.category.price | number }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div id="content2">
+              <div class="payment-section px-0">
+                <p><strong>Important details to be aware of as you go forward: </strong></p>
+                <ol>
+                  <li>At the event you will be seated with your age group, this is not meant to block you from meeting
+                    with other age groups but, to help you meet with those whom you might be most likely to match with.
+                    You will have an opportunity to meet with all participants during the social hour that follows the
+                    more scripted event that precedes it. </li>
+                  <li>We will release demographic information prior to the event. This will not include names or phone
+                    numbers, it is meant to help you understand the group dynamics. </li>
+                  <li>We expect the very best behavior from all of our participants, the spirit and the letter of the
+                    law of Islamic interpersonal behavior as modeled by our Prophet (saw).“Faith consists of more than
+                    seventy branches. And haya (modesty) is a part of faith.” (Al-Bukhari) If anyone is found to have
+                    violated this behavior code, they will be asked to leave, no refund will be issued. We expect not to
+                    have to enforce this rule.</li>
+                  <li>In furtherance of Islamic rules of conduct, any misrepresentation, either in registration or in
+                    person will result in termination of registration and expulsion from the event.</li>
+                  <li>Badge pickup locations and times will be released closer to the event. Please pay close attention
+                    to communications from the Matrimonial staff.</li>
+                </ol>
+              </div>
+
+              <div class="payment-section p-0">
+                <p><strong>Frequently Asked Questions</strong></p>
+                <ol>
+                  <li>
+                    <strong>Where will the events be held?</strong><br>
+                    At a ballroom at the Hilton Anatole Hotel in Dallas, TX.
+                  </li>
+                  <li>
+                    <strong>Is ISNA Matrimonials held concurrently to the ISNA convention?</strong><br>
+                    Yes, it is held during the convention at the same convention location with a separate ballroom.
+                  </li>
+                  <li>
+                    <strong>What is the event format?</strong><br>
+                    The Matrimonial event is comprised of two parts, a speed meet event followed by a light lunch where
+                    attendees freely interact.
+                  </li>
+                  <li>
+                    <strong>Does ISNA provide other matrimonial services?</strong><br>
+                    ISNA has an online matrimonial service and hosts matrimonial banquets during our regional
+                    conferences that occur during the year. More information can be found on the link provided below.
+                    https://isna.net/matrimonial/
+                  </li>
+                  <li>
+                    <strong>Do you provide refunds if I cannot attend?</strong><br>
+                    We do not provide refunds after July 30th.
+                  </li>
+                  <li>
+                    <strong>How long is the event?</strong><br>
+                    We do our best to limit it to 4 hours in length.
+                  </li>
+                  <li>
+                    <strong>Who can I contact about my concerns?</strong><br>
+                    matrimonialintern@isna.net , We are very responsive and will do our best to accommodate you and
+                    answer your questions.
+                  </li>
+                  <li>
+                    <strong>What is meant by demographic information?</strong><br>
+                    Age, education, ethnic group, gender, state or nation of residence.
+                  </li>
+                  <li>
+                    <strong>Is there a dress code?</strong><br>
+                    Yes, business casual, formal ethnic attire, any modest attire that is clean and in good condition,
+                    most of all dress to impress. No ripped jeans or shorts please.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

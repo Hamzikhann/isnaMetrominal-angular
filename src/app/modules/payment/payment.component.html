@@ -1,0 +1,200 @@
+<div class="container">
+  <div class="page-title">
+    <h3>Payment Details</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card border-radius p-4" *ngIf="seatsAvailable">
+        <h4 class="card-title">Registration Details</h4>
+        <div class="br-detail-box mb-3">
+          <ul>
+            <li class="head">
+              <span>Selected Category</span>
+              <span>Price</span>
+            </li>
+            <li>
+              <span class="lbl" *ngIf="registrationCategoryDetail">{{ registrationCategoryDetail.title }} </span>
+              <span class="value" *ngIf="registrationCategoryDetail">${{ registrationCategoryDetail.price | number
+                }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card border-radius p-4">
+        <h4 class="card-title">Release of Liability</h4>
+        <div class="br-detail-box mb-3 p-3">
+          <p>ISNA requires registrants to provide accurate information during the registration process. Intentionally
+            registering with false information will lead to immediate termination of registration, and refunds will be
+            withheld in such cases.</p>
+          <p class="mb-0">ISNA will not be held responsible for any false or misleading information provided by
+            registrants. It is
+            the responsibility of each registrant to fill out their own forms accurately. Refunds will not be issued to
+            those whose forms were completed by another individual.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-radius p-4">
+        <ng-container *ngIf="registrationDetailErr">
+          <h5 class="mb-0 text-center">
+            <span style="color: red">Please complete all the necessary fields on the registration form.</span>
+          </h5>
+          <a [routerLink]="['/registration']" class="mt-4 text-center">
+            <button class="btn btn-outline-dark ">Back to Registration</button>
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="!seatsAvailable">
+          <h5 class="mb-0 text-center">
+            <span style="color: red">Sold out in multiple places</span>
+          </h5>
+        </ng-container>
+        <ng-container *ngIf="seatsAvailable && !registrationDetailErr">
+          <div class="card-tittle border-radius">
+            <p>Total</p>
+            <h4 *ngIf="registrationCategoryDetail">${{registrationCategoryDetail.price | number }}</h4>
+          </div>
+          <div class="form-check my-3">
+            <input class="form-check-input" type="checkbox" id="acknowledgment" [(ngModel)]="acknowledgment"
+              (change)="acknowledgeStatement($event)">
+            <label class="form-check-label" for="acknowledgment">
+              I agree and acknowledge the statement.
+            </label>
+          </div>
+          <div class="row g-3"
+            *ngIf="registrationCategoryDetail?.price > 0 && !registrationDetailErr && acknowledgment">
+            <h4 class="card-title mt-4 mb-2">Enter Payment Detail</h4>
+            <form class="checkout-form" #checkoutForm="ngForm">
+
+              <div class="form-group">
+                <label>Card Holder Name</label>
+                <input type="text" class="form-control" [(ngModel)]="cardHolderName" name="cardHolderName"
+                  placeholder="Enter name" required />
+              </div>
+              <div class="stripe-card" ngxStripeCardGroup>
+
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <div class="stripe-element">
+                        <label>Card Number</label>
+                        <ngx-stripe-card-number [options]="cardOptions" required></ngx-stripe-card-number>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <div class="stripe-element">
+                        <label>Card Expiry</label>
+                        <ngx-stripe-card-expiry [options]="cardOptions" required></ngx-stripe-card-expiry>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <div class="stripe-element">
+                        <label>Card CVC</label>
+                        <ngx-stripe-card-cvc [options]="cardOptions" required></ngx-stripe-card-cvc>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="!paymentProcessing">
+                <button class="button button-icon button-secondary mt-4 w-100" (click)="pay()"
+                  [disabled]="!checkoutForm.form.valid">
+                  CONFIRM BOOKING
+                  <img src="/assets/images/welcome/arrow-bg-white.svg" />
+                </button>
+              </ng-container>
+              <ng-container *ngIf="paymentProcessing">
+                <div class="alert alert-success">Payment Processing...</div>
+              </ng-container>
+            </form>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt-5" *ngIf="seatsAvailable">
+  <div class="card border-radius p-4">
+    <h4 class="card-title">Convention Details</h4>
+    <div class="convention-detail border-radius mt-4">
+      <div class="row">
+        <div class="col-md-7">
+          <ul class="list-info">
+            <ng-container *ngIf="eventDetails">
+              <li>
+                <span class="lbl">Event Name</span>
+                <span class="value">{{ eventDetails.eventName }}</span>
+              </li>
+              <li>
+                <span class="lbl">Event Address</span>
+                <span class="value">{{ eventDetails.eventAddress }}</span>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="registrationDetail">
+              <li>
+                <span class="lbl">Attendee Name</span>
+                <span class="value">{{
+                  registrationDetail.firstName + " " + registrationDetail.lastName
+                  }}</span>
+              </li>
+              <li>
+                <span class="lbl">Address</span>
+                <span class="value">{{ registrationDetail.address }}</span>
+              </li>
+              <li>
+                <span class="lbl">State</span>
+                <span class="value">{{ registrationDetail.state }}</span>
+              </li>
+              <li>
+                <span class="lbl">Country</span>
+                <span class="value">
+                  {{ registrationDetail.country == 'Other' ? registrationDetail.countryOther :
+                  registrationDetail.country }}
+                </span>
+              </li>
+              <li>
+                <span class="lbl">Phone</span>
+                <span class="value">{{ registrationDetail.phone }}</span>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+        <div class="col-md-5">
+          <ul class="list-info">
+            <ng-container *ngIf="eventDetails">
+              <li>
+                <span class="lbl">Event Date:</span>
+                <span class="value">{{ eventDetails.eventStartDate + ' - ' + eventDetails.eventEndDate }}</span>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="registrationDetail">
+              <li>
+                <span class="lbl">Email</span>
+                <span class="value">{{ registrationDetail.email }}</span>
+              </li>
+              <li>
+                <span class="lbl">City:</span>
+                <span class="value">{{ registrationDetail.city }}</span>
+              </li>
+              <li>
+                <span class="lbl">Zip:</span>
+                <span class="value">{{ registrationDetail.zipCode }}</span>
+              </li>
+              <li>
+                <span class="lbl">Cell Phone</span>
+                <span class="value">{{ registrationDetail.cellPhone }}</span>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

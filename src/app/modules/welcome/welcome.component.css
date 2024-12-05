@@ -1,0 +1,10 @@
+.welcome-card {
+  /* height: calc(100vh - 200px);
+  overflow: hidden;
+  overflow-y: scroll; */
+}
+.welcome-card ol li {
+  font-size: 12px;
+  line-height: 18px;
+  margin-bottom: 6px;
+}

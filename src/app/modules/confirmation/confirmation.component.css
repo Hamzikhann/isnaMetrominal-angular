@@ -1,0 +1,37 @@
+.text-right {
+  text-align: right;
+}
+.invoice {
+  border: 1px solid lightgray;
+  border-style: dashed;
+  border-radius: 8px;
+  padding: 32px;
+  margin-top: 12px;
+  margin-bottom: 32px;
+}
+
+h4 {
+  font-size: 16px !important;
+}
+p {
+  font-size: 16px;
+}
+.table td {
+  border-bottom: 0;
+  font-size: 16px;
+  padding: 0;
+}
+
+ol li {
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+@media only screen and (max-width: 600px) {
+  #download-invoice {
+    display: none;
+  }
+  .col-md-8.offset-2 {
+    margin: 0;
+  }
+}

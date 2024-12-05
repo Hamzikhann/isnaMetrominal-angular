@@ -1,0 +1,197 @@
+.form-section {
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+.form-section label {
+  font-weight: bold;
+}
+.form-section .form-check {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+}
+.form-section .form-check-input {
+  margin-top: 0.3em;
+}
+.form-section .form-check-label {
+  margin-left: 10px;
+}
+
+.toast-container {
+  font-size: 13px;
+}
+
+.footer {
+  margin-top: 60px;
+}
+
+.grid-container {
+  grid-template-columns: repeat(37, 1fr);
+}
+
+div#food {
+  right: 28px;
+}
+
+#food-court125 {
+  right: -60px;
+  bottom: 276px;
+}
+
+#food-court125 {
+  transform: rotate(-90deg);
+
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+
+  /* IE */
+  -ms-transform: rotate(-90deg);
+
+  /* Opera */
+  -o-transform: rotate(-90deg);
+}
+
+#food-court125-arrow-left {
+  position: absolute;
+  right: -32px;
+  transform: rotate(-90deg);
+  top: 212px;
+}
+#food-court125-arrow-right {
+  position: absolute;
+  right: -32px;
+  transform: rotate(90deg);
+  top: 404px;
+}
+#food-buffet {
+  right: 54px;
+  position: absolute;
+  bottom: 82px;
+}
+
+/* @media screen and (max-width: 1440px) {
+  #food-court125 {
+    right: -60px;
+    bottom: 276px;
+  }
+} */
+
+@media screen and (max-width: 767px) {
+  div#food {
+    right: -876px;
+  }
+  #food-court125 {
+    right: -972px;
+    bottom: 274px;
+  }
+  #food-court125-arrow-left {
+    right: -946px;
+  }
+  #food-court125-arrow-right {
+    right: -948px;
+  }
+  #food-buffet {
+    right: -856px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid-container {
+    width: unset;
+  }
+}
+
+.grid-item.food {
+  cursor: default;
+  background: transparent;
+  color: #000;
+  font-size: 16px;
+}
+.grid-item.foodcourt {
+  cursor: default;
+  transform: rotate(-90deg);
+  background: transparent;
+  color: #000;
+  font-size: 20px;
+}
+
+.dt-paging.paging_full_numbers {
+  float: right;
+}
+
+button.dt-paging-button {
+  padding: 0 8px;
+  border: 1px solid darkgrey;
+  margin: 0 4px;
+  margin-top: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+}
+
+button.dt-paging-button.disabled {
+  background: #f7f7f7;
+  cursor: not-allowed;
+}
+
+div#DataTables_Table_0_info {
+  float: left;
+  margin: 6px 0;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.dt-search {
+  float: right;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.dt-search label {
+  margin-right: 12px;
+}
+.dt-buttons {
+  float: left;
+}
+button.dt-button {
+  padding: 4px 12px !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border-color: #222 !important;
+}
+button.dt-button:hover {
+  background: #dedede !important;
+}
+
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.grid-item.hold::before {
+  content: "";
+}
+
+.button {
+  display: inline-flex; /* Aligns the content inside the button (icon and text) */
+  justify-content: center; /* Centers the content horizontally within the button */
+  align-items: center; /* Centers the content vertically within the button */
+  width: 200px; /* Set the desired width of the button */
+  padding: 10px 20px; /* Adjust the padding for the button content */
+  margin-left: auto; /* Pushes the button to the right side */
+  margin-right: 10px; /* Ensures there is no extra margin on the right side */
+  text-align: center; /* Centers the text inside the button */
+}
+
+.button.button-secondary:disabled {
+  background-color: lightgrey;
+  color: #666;
+}

@@ -1,0 +1,938 @@
+<ng-container *ngIf="!userLoggedIn">
+  <div class="container" style="height: calc(100vh - 200px);">
+    <div class="row">
+      <div class="col-4">
+        <div class="page-title mt-5 pt-5 text-left">
+          <h3>Login</h3>
+          <small>Enter account credentials.</small>
+          <hr class="w-25">
+        </div>
+        <form class="mb-5 pb-5">
+          <div class="form-group my-3">
+            <label for="isna-email">Email address</label>
+            <input type="email" class="form-control" name="isna-email" id="isna-email" [(ngModel)]="user.email"
+              placeholder="Enter email">
+          </div>
+          <div class="form-group my-3">
+            <label for="isna-password">Password</label>
+            <input type="password" class="form-control" name="isna-password" id="isna-password"
+              [(ngModel)]="user.password" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-dark btn-sm mt-3" (click)="login()">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="userLoggedIn">
+  <div class="container" style="height: 100vh">
+    <!-- <div class="d-flex flex-col bd-highlight mb-3">
+      <div class="d-flex flex-row bd-highlight mb-3">
+        <div class="">
+          <label>Gender Male</label>
+          <div class="form-check" *ngFor="let ageGroup of seatingGroup">
+            <input class="form-check-input" type="checkbox" [attr.id]="ageGroup.id" [checked]="ageGroup.maleStatus=='Y'"
+              [disabled]="!condition" (change)="onCheckboxChangeMale($event,ageGroup)">
+            <label class="form-check-label" [attr.for]="ageGroup.id">
+              {{ ageGroup.title }}
+            </label>
+          </div>
+        </div>
+        <div class="d-flex flex-row">
+          <label>Gender Female</label>
+          <div class="form-check" *ngFor="let ageGroup of seatingGroup">
+            <input class="form-check-input" type="checkbox" [attr.id]="ageGroup.id"
+              [checked]="ageGroup.femaleStatus=='Y'" [disabled]="!condition"
+              (change)="onCheckboxChangeFemale($event,ageGroup)">
+            <label class="form-check-label" [attr.for]="ageGroup.id">
+              {{ ageGroup.title }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="m-3">
+        <button type="submit" class="btn btn-dark " (click)="edit()" *ngIf="condition==false">Edit</button>
+        <button type="submit" class="btn btn-dark " (click)="save()" *ngIf="condition==true">Save</button>
+      </div>
+    </div> -->
+    <div class="page-title text-left">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3>Registrations
+          <a class="btn btn-sm btn-info mx-2" (click)="getBookings()">Refresh</a>
+        </h3>
+        <div class="d-flex">
+          <a target="_blank" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">Create
+            New Registration</a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive" *ngIf="registrations.length">
+      <table datatable [dtOptions]="dtOptions" class="table table-hover">
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>Date Time</td>
+            <td>Status</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>Martial Status</td>
+            <td>Gender</td>
+            <td>Residential Status</td>
+            <td>Ethnic Background</td>
+            <td>Address</td>
+            <td>City</td>
+            <td>Country</td>
+            <td>State</td>
+            <td>Zip Code</td>
+            <td>Phone</td>
+            <td>Cell Phone</td>
+            <td class="text-center">Date Of Birth</td>
+            <td class="text-center">Age</td>
+            <td class="text-center">Seating Group</td>
+            <td>Parent First Name</td>
+            <td>Parent Last Name</td>
+            <td>Relationship</td>
+            <td>Registration Category</td>
+            <td>Education Level</td>
+            <td>Profession</td>
+            <!-- <td>Registration Method</td>
+            <td>Payment Method</td> -->
+            <td>Reference No</td>
+            <td>Total Payment</td>
+            <td class="text-center">Actions</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let registration of registrations">
+            <td>ISB-24-{{ registration.bookingId }}</td>
+            <td>{{ registration.datetime }}</td>
+            <td>
+              <span class="badge badge-success" *ngIf="registration.status == 'Success'">Success</span>
+              <span class="badge badge-danger" *ngIf="registration.status == 'Cancel'">Refunded</span>
+            </td>
+            <td>{{ registration.registration.firstName }}</td>
+            <td>{{ registration.registration.lastName }}</td>
+            <td>{{ registration.registration.email }}</td>
+            <td>{{ registration.registration.martialStatus }}</td>
+            <td>{{ registration.registration.gender }}</td>
+            <td>{{ registration.registration.residentialStatus }}</td>
+            <td>{{ registration.registration.ethnicBackground }}</td>
+            <td>{{ registration.registration.address }}</td>
+            <td>{{ registration.registration.city }}</td>
+            <td>{{ registration.registration.country == 'Other' ? registration.registration.otherCountry :
+              registration.registration.country }}</td>
+            <td>{{ registration.registration.state }}</td>
+            <td>{{ registration.registration.zipCode }}</td>
+            <td>{{ registration.registration.phone }}</td>
+            <td>{{ registration.registration.cellPhone }}</td>
+            <td class="text-center">{{ registration.registration.dateOfBirth }}</td>
+            <td class="text-center">{{ registration.registration.age }}</td>
+            <td class="text-center">{{ registration.registration.seatingGroup.title }}</td>
+            <td>{{ registration.registration.parentFirstName }}</td>
+            <td>{{ registration.registration.parentLastName }}</td>
+            <td>{{ registration.registration.relationship }}</td>
+            <td>{{ registration.registration.category.title }}</td>
+            <td>{{ registration.registration.educationLevel.title == 'Other' ?
+              registration.registration.educationLevelOther : registration.registration.educationLevel.title }}</td>
+            <td>{{ registration.registration.profession.title == 'Other' ? registration.registration.otherProfession :
+              registration.registration.profession.title }}</td>
+            <!-- <td>{{ registration.bookingPayments[0].registrationMethod }}</td>
+            <td>{{ registration.bookingPayments[0].paymentMethod }}</td> -->
+            <td>{{ registration.bookingPayments[0].referenceNo }}</td>
+
+
+            <td>
+              <ng-container *ngIf="registration.bookingPayments.length > 0">
+                ${{ registration.bookingPayments[0].totalPayment }}
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="registration.status != 'Cancel'">
+                <a [routerLink]="['/confirmation/', registration.idEncrypted]" target="_blank">
+                  <button type="button" class="btn btn-secondary btn-sm btn-edit mx-1">
+                    Download
+                  </button>
+                </a>
+                <button type="button" (click)="onSelectedBooking(registration)"
+                  class="btn btn-primary btn-sm btn-edit mx-1" data-bs-toggle="modal" data-bs-target="#updateModal">
+                  Edit
+                </button>
+                <button (click)="onSelectedBooking(registration)" type="button"
+                  class="btn btn-danger btn-sm btn-refund mx-1" data-bs-toggle="modal" data-bs-target="#refundModal">
+                  Refund
+                </button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Refund Modal -->
+    <div class="modal fade" id="refundModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Booking Details</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div *ngIf="selectedRegistration">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label>Booking ID</label>
+                    <p>{{ 'ISB-24-'+selectedRegistration.bookingId }}</p>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>First Name</label>
+                        <p>{{ selectedRegistration.registration.firstName }}</p>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>Last Name</label>
+                        <p>{{ selectedRegistration.registration.lastName }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Registration Category</label>
+                        <p>{{ selectedRegistration.registration.category }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="form-group">
+                    <label>Phone</label>
+                    <p>
+                      {{selectedRegistration.registration.phone}}</p>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label>Address</label>
+                      <p>
+                        {{selectedRegistration.registration.address}}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="form-group">
+                    <label>City</label>
+                    <p>{{ selectedRegistration.registration.city }}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label>State</label>
+                    <p>{{ selectedRegistration.registration.state}}</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label>Zipcode</label>
+                    <p>{{selectedRegistration.registration.zipcode }}</p>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Total Payment</label>
+                    <p>$ {{ selectedRegistration.bookingPayments[0].totalPayment }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <h6 class="text-danger">Are you sure to refund this payment?</h6>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="resetSelectedBooking()">Cancel</button>
+            <button type="button" class="btn btn-danger" (click)="onRefund(selectedRegistration)"
+              data-bs-dismiss="modal">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Update Model-->
+    <div class="modal fade modal-lg" id="updateModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Registration Details</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div *ngIf="selectedRegistration">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label>Booking ID</label>
+                    <p>{{ 'ISB-24-'+selectedRegistration.bookingId }}</p>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row mb-4">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Attendee First Name</label>
+                        <input type="text" [(ngModel)]=" selectedRegistration.registration.firstName"
+                          class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Attendee Last Name</label>
+                        <input type="text" [(ngModel)]=" selectedRegistration.registration.lastName"
+                          class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Gender</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.gender" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Martial Status</label>
+                        <select class="form-control form-select" name="martialStatus"
+                          [(ngModel)]="selectedRegistration.registration.martialStatus">
+                          <option disabled selected>{{selectedRegistration.registration.martialStatus}}</option>
+                          <ng-container *ngFor="let element  of maritalStatuses">
+                            <option>{{ element }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.address" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>City</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.city" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Zip Code</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.zipCode" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.email" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.phone" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Cell Phone</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.cellPhone"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Date Of Birth</label>
+                        <input type="date" [(ngModel)]="selectedRegistration.registration.dateOfBirth"
+                          class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Select Group for Seating</label>
+                        <select class="form-control form-select" name="seatingGroup"
+                          (change)="setSeating($event.target)"
+                          [(ngModel)]="selectedRegistration.registration.seatingGroup">
+                          <option disabled selected>{{selectedRegistration.registration.seatingGroup}}</option>
+                          <ng-container *ngFor="let seating  of seatingGroup">
+                            <option value="{{seating.id}}"
+                              [disabled]="selectedRegistration.registration.seatingGroup==seating.title">{{
+                              seating.title
+                              }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Profession</label>
+                        <select class="form-control form-select" name="profession"
+                          (change)="setProfession($event.target)"
+                          [(ngModel)]="selectedRegistration.registration.profession">
+                          <option disabled selected>{{selectedRegistration.registration.profession}}</option>
+                          <ng-container *ngFor="let profession of professions">
+                            <option value="{{profession.id}}">{{ profession.title }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Other Profession</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.otherProfession"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Education Level</label>
+                        <select class="form-control form-select" name="educationLevel"
+                          (change)="setEducation($event.target)"
+                          [(ngModel)]="selectedRegistration.registration.educationLevel">
+                          <option disabled selected>{{selectedRegistration.registration.educationLevel}}</option>
+                          <ng-container *ngFor="let level of educationLevel">
+                            <option value="{{level.id}}">{{ level.title }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Education Level</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.educationLevelOther"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Residental Status</label>
+                        <select class="form-control form-select" name="residentialStatus"
+                          [(ngModel)]="selectedRegistration.registration.residentialStatus">
+                          <option disabled selected>{{selectedRegistration.registration.residentialStatus}}</option>
+                          <ng-container *ngFor="let element  of residentialStatuses">
+                            <option>{{ element }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Ethnic Background </label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.ethnicBackground"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Country</label>
+                        <select class="form-control form-select" name="country"
+                          [(ngModel)]="selectedRegistration.registration.country">
+                          <option disabled selected>{{selectedRegistration.registration.country}}</option>
+                          <ng-container *ngFor="let country of countries">
+                            <option>{{ country }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Other Country</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.otherCountry"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>State</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.state" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>State</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.otherState"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Parent/Guardian First Name</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.parentFirstName"
+                          class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Parent/Guardian Last Name</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.parentLastName"
+                          class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Parent/Guardian Relationship</label>
+                        <input type="text" [(ngModel)]="selectedRegistration.registration.relationship"
+                          class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="resetSelectedBooking()">Cancel</button>
+            <button type="button" class="btn btn-danger" (click)="onUpdate(selectedRegistration)"
+              data-bs-dismiss="modal">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--New Registration Modal-->
+
+    <div class="modal fade modal-xl" id="addModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Create New Registration</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div class="row">
+                <div class="col-6">
+                </div>
+                <div class="col-12">
+                  <div class="row mb-4">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Attendee First Name</label>
+                        <input type="text" [(ngModel)]="registration.firstName" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Attendee Last Name</label>
+                        <input type="text" [(ngModel)]=" registration.lastName" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select [(ngModel)]="registration.gender" class="form-control form-select" id="gender">
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Martial Status</label>
+                        <select class="form-control form-select" name="martialStatus"
+                          [(ngModel)]="registration.martialStatus">
+                          <option disabled selected>{{registration.martialStatus}}</option>
+                          <ng-container *ngFor="let element  of maritalStatuses">
+                            <option>{{ element }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" [(ngModel)]="registration.address" class="form-control "
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>City</label>
+                        <input type="text" [(ngModel)]="registration.city" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label>Zip Code</label>
+                        <input type="text" [(ngModel)]="registration.zipCode" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="text" [(ngModel)]="registration.email" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" [(ngModel)]="registration.phone" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Cell Phone</label>
+                        <input type="text" [(ngModel)]="registration.cellPhone" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Date Of Birth</label>
+                        <input type="date" [(ngModel)]="registration.dateOfBirth" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Ethnic Background </label>
+                        <input type="text" [(ngModel)]="registration.ethnicBackground" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Select Group for Seating</label>
+                        <select class="form-control form-select" name="seatingGroup"
+                          (change)="setSeating($event.target)" [(ngModel)]="registration.seatingGroupId">
+                          <option disabled selected>{{registration.seatingGroup}}</option>
+                          <ng-container *ngFor="let seating  of seatingGroup">
+                            <option value="{{seating.id}}" [disabled]="registration.seatingGroup==seating.title">{{
+                              seating.title
+                              }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Profession</label>
+                        <select class="form-control form-select" name="profession"
+                          (change)="setProfession($event.target)" [(ngModel)]="registration.professionId">
+                          <option disabled selected>{{registration.profession}}</option>
+                          <ng-container *ngFor="let profession of professions">
+                            <option value="{{profession.id}}">{{ profession.title }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4" *ngIf="registration.professionId == 20">
+                      <div class="form-group">
+                        <label>Other Profession</label>
+                        <input type="text" [(ngModel)]="registration.otherProfession" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Education Level</label>
+                        <select class="form-control form-select" name="educationLevel"
+                          (change)="setEducation($event.target)" [(ngModel)]="registration.educationLevelId">
+                          <option disabled selected>{{registration.educationLevel}}</option>
+                          <ng-container *ngFor="let level of educationLevel">
+                            <option value="{{level.id}}">{{ level.title }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4" *ngIf="educationLevelId == '6'">
+                      <div class="form-group">
+                        <label>Education Level</label>
+                        <input type="text" [(ngModel)]="registration.educationLevelOther" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Residental Status</label>
+                        <select class="form-control form-select" name="residentialStatus"
+                          [(ngModel)]="registration.residentialStatus">
+                          <option disabled selected>{{registration.residentialStatus}}</option>
+                          <ng-container *ngFor="let element  of residentialStatuses">
+                            <option>{{ element }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 form-group" *ngIf="registration.residentialStatus == 'Other'">
+                      <label>Residental Status</label>
+                      <input type="text" class="form-control" id="residentialStatusOther"
+                        [(ngModel)]="registration.residentialStatusOther" (change)="updateContactData()"
+                        [disabled]="registration.residentialStatus != 'Other'" placeholder="Enter Residental Status" />
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Country</label>
+                        <select class="form-control form-select" name="country" [(ngModel)]="registration.country">
+                          <option disabled selected>{{registration.country}}</option>
+                          <ng-container *ngFor="let country of countries">
+                            <option>{{ country }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4" *ngIf="registration.country == 'Other'">
+                      <div class="form-group">
+                        <label>Other Country</label>
+                        <input type="text" [(ngModel)]="registration.otherCountry" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-4 form-group">
+                      <label>State</label>
+                      <div class="form-group" *ngIf="registration.country !== 'Other'">
+                        <select class="form-control form-select" name="state" [(ngModel)]="registration.state"
+                          (change)="updateContactData()">
+                          <option selected disabled>Please Select ...</option>
+                          <option></option>
+                          <ng-container *ngIf="registration.country === 'United States'">
+                            <option *ngFor="let state of statesUS">{{ state }}</option>
+                          </ng-container>
+                          <ng-container *ngIf="registration.country === 'Canada'">
+                            <option *ngFor="let state of statesCanada">{{ state }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                      <div class="form-groupcol-4" *ngIf="registration.country == 'Other'">
+                        <div class=" ">
+                          <input type="text" [(ngModel)]="registration.state" class="form-control"
+                            (change)="updateContactData()">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h4 class="mt-5">Registration Category</h4>
+                  <div class="row mb-3">
+                    <label class=" col-sm-3 col-form-label">Registration Category <span>*</span></label>
+                    <div class="col-sm-4">
+                      <select class="form-control form-select" name="category" [(ngModel)]="registrationCategoryId"
+                        (change)="setRegistrationCategory()" placeholder="Please Select">
+                        <option>Please Select ...</option>
+                        <ng-container *ngFor="let category of categories">
+                          <option value="{{category.id}}">{{ category.title }} ${{ category.price }}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row"
+                    *ngIf="registrationCategoryId == '2' || registrationCategoryId == '4' || registrationCategoryId == '6'">
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Parent/Guardian First Name</label>
+                        <input type="text" [(ngModel)]="registration.parentFirstName" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Parent/Guardian Last Name</label>
+                        <input type="text" [(ngModel)]="registration.parentLastName" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label>Parent/Guardian Relationship</label>
+                        <input type="text" [(ngModel)]="registration.relationship" class="form-control"
+                          (change)="updateContactData()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-container>
+                  <button [disabled]="isPayment" class="button button-icon button-secondary mt-4 "
+                    (click)="checkContactDetails()">
+                    Proceed to payment
+                    <img src="/assets/images/welcome/arrow-bg-white.svg" />
+                  </button>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+          <!--Payment setup-->
+          <div class="row m-2" *ngIf="isPayment">
+            <div class="col-md-8">
+              <div class="card border-radius p-4">
+                <h4 class="card-title">Registration Details</h4>
+                <div class="br-detail-box mb-3">
+                  <ul>
+                    <li class="head">
+                      <span>Selected Category</span>
+                      <span>Price</span>
+                    </li>
+                    <li>
+                      <span class="lbl" *ngIf="registrationCategoryDetail">{{ registrationCategoryDetail.title }}
+                      </span>
+                      <span class="value" *ngIf="registrationCategoryDetail">${{ registrationCategoryDetail.price |
+                        number
+                        }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card border-radius p-4">
+                <h4 class="card-title">Release of Liability</h4>
+                <div class="br-detail-box mb-3 p-3">
+                  <p>ISNA requires registrants to provide accurate information during the registration process.
+                    Intentionally
+                    registering with false information will lead to immediate termination of registration, and refunds
+                    will be
+                    withheld in such cases.</p>
+                  <p class="mb-0">ISNA will not be held responsible for any false or misleading information provided by
+                    registrants. It is
+                    the responsibility of each registrant to fill out their own forms accurately. Refunds will not be
+                    issued to
+                    those whose forms were completed by another individual.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-radius p-4">
+                <ng-container *ngIf="registrationDetailsErr">
+                  <h5 class="mb-0 text-center">
+                    <span style="color: red">Please complete all the necessary fields on the registration form.</span>
+                  </h5>
+                </ng-container>
+                <ng-container *ngIf="!registrationDetailsErr">
+                  <div class="card-tittle border-radius">
+                    <p>Total</p>
+                    <h4 *ngIf="registrationCategoryDetail">${{registrationCategoryDetail.price | number }}</h4>
+                  </div>
+                  <div class="form-check my-3">
+                    <input class="form-check-input" type="checkbox" id="acknowledgment" [(ngModel)]="acknowledgment"
+                      (change)="acknowledgeStatement($event)">
+                    <label class="form-check-label" for="acknowledgment">
+                      I agree and acknowledge the statement.
+                    </label>
+                  </div>
+                  <div class="row g-3"
+                    *ngIf="registrationCategoryDetail?.price > 0 && !registrationDetailsErr && acknowledgment">
+                    <h4 class="card-title mt-4 mb-2">Enter Payment Detail</h4>
+                    <form class="checkout-form" #checkoutForm="ngForm">
+
+                      <div class="form-group">
+                        <label>Card Holder Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="cardHolderName" name="cardHolderName"
+                          placeholder="Enter name" required />
+                      </div>
+                      <div class="stripe-card" ngxStripeCardGroup>
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="stripe-element">
+                                <label>Card Number</label>
+                                <ngx-stripe-card-number [options]="cardOptions" required></ngx-stripe-card-number>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="stripe-element">
+                                <label>Card Expiry</label>
+                                <ngx-stripe-card-expiry [options]="cardOptions" required></ngx-stripe-card-expiry>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="stripe-element">
+                                <label>Card CVC</label>
+                                <ngx-stripe-card-cvc [options]="cardOptions" required></ngx-stripe-card-cvc>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="!paymentProcessing">
+                        <button class="button button-icon button-secondary mt-4 w-100" (click)="pay()"
+                          [disabled]="!checkoutForm.form.valid">
+                          CONFIRM BOOKING
+                          <img src="/assets/images/welcome/arrow-bg-white.svg" />
+                        </button>
+                      </ng-container>
+                      <ng-container *ngIf="paymentProcessing">
+                        <div class="alert alert-success">Payment Processing...</div>
+                      </ng-container>
+                    </form>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">Cancel</button>
+            <!-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+              (click)="checkContactDetails()">Create</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

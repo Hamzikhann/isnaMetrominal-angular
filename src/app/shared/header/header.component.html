@@ -1,0 +1,44 @@
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <img src="/assets/images/welcome/Group 1.svg" alt="" />
+      <p>
+        61st Annual ISNA Matrimonial Banquets<br />
+        Hilton Anatole Dallas, TX
+      </p>
+    </div>
+  </div>
+</header>
+<div class="container mb-4">
+  <div class="menu" *ngIf="router.url != '/admin'">
+    <ul *ngIf="router.url == '/'">
+      <li>
+        <a [routerLink]=" ['/']" [class.active]="router.url=='/'">Welcome</a>
+      </li>
+
+      <li>
+        <a href="javascript:void(0)" (click)="showAlert()">Registration</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" (click)="showAlert()">Payment</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" (click)="showAlert()">Confirmation</a>
+      </li>
+    </ul>
+    <ul *ngIf="router.url != '/'">
+      <li>
+        <a [routerLink]="['/']" [class.active]="router.url.includes('welcome')">Welcome</a>
+      </li>
+      <li>
+        <a [routerLink]="['registration']" [class.active]="router.url.includes('registration')">Registration</a>
+      </li>
+      <li>
+        <a [routerLink]="['payment']" [class.active]="router.url.includes('payment')">Payment</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" [class.active]="router.url.includes('confirmation')">Confirmation</a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+td {
+  white-space: nowrap;
+  font-size: 13px;
+}
+thead td {
+  font-weight: 600;
+}
+.btn-refund {
+  font-size: 12px;
+  padding: 4px 12px;
+}
+
+.btn-edit {
+  font-size: 12px;
+  padding: 4px 12px;
+}
+
+.form-group {
+  label {
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+.form-group {
+  p {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+.form-group {
+  table {
+    td {
+      padding: 0 4px;
+    }
+  }
+}
+
+.badge-success {
+  background: green;
+}
+.badge-danger {
+  background: red;
+}
+
+input {
+  font-size: 14px;
+}

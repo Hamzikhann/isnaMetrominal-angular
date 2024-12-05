@@ -1,0 +1,278 @@
+<div class="contact">
+  <div class="container">
+    <div class="form">
+      <h4>Personal Information</h4>
+      <div class="row mb-3">
+        <label for="firstName" class="col-sm-3 col-form-label">Attendee First Name <span>*</span></label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="firstName" [(ngModel)]="registration.firstName" t
+            (change)="updateContactData()" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="lastName" class="col-sm-3 col-form-label">Attendee Last Name <span>*</span></label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="lastName" [(ngModel)]="registration.lastName"
+            (change)="updateContactData()" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Marital Status <span>*</span></label>
+        <div class="col-sm-4">
+          <select class="form-control form-select" name="martialStatus" [(ngModel)]="registration.martialStatus"
+            (change)="updateContactData()">
+            <option disabled selected>Please Select ...</option>
+            <ng-container *ngFor="let element  of maritalStatuses">
+              <option>{{ element }}</option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Gender <span>*</span></label>
+        <div class="col-sm-4">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" id="genderMale" [(ngModel)]="registration.gender"
+              (change)="onChangeGender($event)" value="Male" [disabled]="!genderMaleSeatsAvailable">
+            <label class="form-check-label" for="genderMale">
+              Male
+              <span style="color: red" *ngIf="!genderMaleSeatsAvailable">
+                (Sold out in multiple places)
+              </span>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" id="genderFemale"
+              [(ngModel)]="registration.gender" (change)="onChangeGender($event)" value="Female"
+              [disabled]="!genderFemaleSeatsAvailable">
+            <label class="form-check-label" for="genderFemale">
+              Female
+              <span style="color: red" *ngIf="!genderFemaleSeatsAvailable">
+                (Sold out in multiple places)
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-7" *ngIf="genderMaleSeatsAvailable || genderFemaleSeatsAvailable">
+          <div class="alert alert-secondary mt-3">
+            <small>Anyone over 45 years of age who would like to apply to the matrimonial banquets please email <a
+                href="mailto:matrimonialintern@isna.net">matrimonialintern@isna.net</a></small>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="genderMaleSeatsAvailable || genderFemaleSeatsAvailable">
+
+        <div class="row mb-3">
+          <label for="dateOfBirth" class="col-sm-3 col-form-label">Date of Birth <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" id="dateOfBirth" [(ngModel)]="registration.dateOfBirth"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">Select Group for Seating <span>*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control form-select" name="seatingGroup" [(ngModel)]="seatingGroupId"
+              (change)="setSeating()">
+              <option value="0">Please Select ...</option>
+              <ng-container *ngFor="let seating  of seatingGroup">
+                <option value="{{seating.id}}">{{ seating.title }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">Profession <span>*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control form-select" name="profession" [(ngModel)]="professionId"
+              (change)="setProfession()">
+              <option disabled selected>Please Select ...</option>
+              <ng-container *ngFor="let profession of professions">
+                <option value="{{profession.id}}">{{ profession.title }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-sm-4" *ngIf="registration.professionId == 20">
+            <input type="text" class="form-control" id="otherProfession" [(ngModel)]="registration.otherProfession"
+              (change)="updateContactData()" [disabled]="registration.professionId != 20"
+              placeholder="Enter Profession" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">Education Level <span>*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control form-select" name="educationLevel" [(ngModel)]="educationLevelId"
+              (change)="setEducation()">
+              <option disabled selected>Please Select ...</option>
+              <ng-container *ngFor="let level of educationLevel">
+                <option value="{{level.id}}">{{ level.title }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-sm-4" *ngIf="educationLevelId == '6'">
+            <input type="text" class="form-control" id="educationLevelOther"
+              [(ngModel)]="registration.educationLevelOther" (change)="updateContactData()"
+              [disabled]="educationLevelId != '6'" placeholder="Enter Education Level" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">My Residental Status <span>*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control form-select" name="residentialStatus"
+              [(ngModel)]="registration.residentialStatus" (change)="updateContactData()">
+              <option disabled selected>Please Select ...</option>
+              <ng-container *ngFor="let element  of residentialStatuses">
+                <option>{{ element }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-sm-4" *ngIf="registration.residentialStatus == 'Other'">
+            <input type="text" class="form-control" id="residentialStatusOther"
+              [(ngModel)]="registration.residentialStatusOther" (change)="updateContactData()"
+              [disabled]="registration.residentialStatus != 'Other'" placeholder="Enter Residental Status" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="ethnicBackground" class="col-sm-3 col-form-label">Ethnic Background <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="ethnicBackground" [(ngModel)]="registration.ethnicBackground"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="address" class="col-sm-3 col-form-label">Address <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="address" [(ngModel)]="registration.address"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="city" class="col-sm-3 col-form-label">City <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="city" [(ngModel)]="registration.city"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class=" col-sm-3 col-form-label">Country <span>*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control form-select" name="country" [(ngModel)]="registration.country"
+              (change)="updateContactData()">
+              <option disabled selected>Please Select ...</option>
+              <ng-container *ngFor="let country of countries">
+                <option>{{ country }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-sm-4" *ngIf="registration.country == 'Other'">
+            <input type="text" class="form-control" id="otherCountry" [(ngModel)]="registration.countryOther"
+              (change)="updateContactData()" [disabled]="registration.country != 'Other'"
+              placeholder="Enter Country Name" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">State <span>*</span></label>
+          <div class="col-sm-4" *ngIf="registration.country == 'Other'">
+            <input type="text" class="form-control" id="otherState" [(ngModel)]="registration.state"
+              (change)="updateContactData()" />
+          </div>
+          <div class="col-sm-4" *ngIf="registration.country != 'Other'">
+            <select class="form-control form-select" name="state" [(ngModel)]="registration.state"
+              (change)="updateContactData()">
+              <option selected disabled>Please Select ...</option>
+              <option></option>
+              <ng-container *ngIf="registration.country === 'United States'">
+                <option *ngFor="let state of statesUS">{{ state }}</option>
+              </ng-container>
+              <ng-container *ngIf="registration.country === 'Canada'">
+                <option *ngFor="let state of statesCanada">{{ state }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="zipCode" class="col-sm-3 col-form-label">ZIP Code/Postal Code <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control" id="zipCode" [(ngModel)]="registration.zipCode"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="email" class="col-sm-3 col-form-label">Email <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="email" class="form-control" id="email" [(ngModel)]="registration.email"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="phone" class="col-sm-3 col-form-label">Phone <span>*</span></label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="phone" [(ngModel)]="registration.phone"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="cellPhone" class="col-sm-3 col-form-label">Cell Phone </label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="cellPhone" [(ngModel)]="registration.cellPhone"
+              (change)="updateContactData()" />
+          </div>
+        </div>
+
+        <h4 class="mt-5">Registration Category</h4>
+        <div class="row mb-3">
+          <label class=" col-sm-3 col-form-label">Registration Category <span>*</span></label>
+          <div class="col-sm-4">
+            <select class="form-control form-select" name="category" [(ngModel)]="registrationCategoryId"
+              (change)="setRegistrationCategory()" placeholder="Please Select">
+              <option>Please Select ...</option>
+              <ng-container *ngFor="let category of categories">
+                <option value="{{category.id}}">{{ category.title }} ${{ category.price }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+
+        <ng-container
+          *ngIf="registrationCategoryId == '2' || registrationCategoryId == '4' || registrationCategoryId == '6'">
+          <h4 class="mt-5">Parent/Guardian Information</h4>
+          <div class="row mb-3">
+            <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="parentFirstName" [(ngModel)]="registration.parentFirstName"
+                (change)="updateContactData()" />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="parentLastName" [(ngModel)]="registration.parentLastName"
+                (change)="updateContactData()" />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="lastName" class="col-sm-3 col-form-label">Relationship</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="relationship" [(ngModel)]="registration.relationship"
+                (change)="updateContactData()" />
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+
+      <div class="d-flex justify-content-end mt-4 mb-5">
+        <a [routerLink]="['/']" class="button-outline-primary button button-icon me-3">
+          Back
+          <img src="/assets/images/welcome/Arrow-primary.svg" alt="" />
+        </a>
+        <button type="submit" class="button button-icon button-primary" (click)="checkContactDetails()"
+          *ngIf="!seatingGroupErr && ( genderMaleSeatsAvailable || genderFemaleSeatsAvailable)">
+          Continue
+          <img src="/assets/images/welcome/arrow-bg-white.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.card .payment-methods {
+  justify-content: unset;
+}
+.card .payment-methods .form-check {
+  margin-right: 12px;
+}
+.text-right {
+  text-align: right;
+}
+
+label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+button:disabled {
+  background-color: #eb283899 !important;
+}
